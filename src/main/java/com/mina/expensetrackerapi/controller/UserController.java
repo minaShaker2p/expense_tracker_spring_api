@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -29,5 +30,15 @@ public class UserController {
         userMap.put("message", "registered successfully");
         return new ResponseEntity(userMap, HttpStatus.OK);
 
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, String>> loginUser(@RequestBody Map<String, Object> usermap) {
+        String email = (String) usermap.get("email");
+        String password = (String) usermap.get("password");
+        User user = userService.validateUser(email, password);
+        Map<String, String> map = new HashMap<>();
+        map.put("message", "Logged Successfully");
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }
