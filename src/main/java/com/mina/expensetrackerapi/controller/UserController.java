@@ -27,8 +27,9 @@ public class UserController {
         String email = (String) userMap.get("email");
         String password = (String) userMap.get("password");
         User user = userService.registerUser(firstName, lastName, email, password);
-        userMap.put("message", "registered successfully");
-        return new ResponseEntity(userMap, HttpStatus.OK);
+        Map<String, String> result = new HashMap<>();
+        result.put("message", "registered successfully");
+        return new ResponseEntity(result, HttpStatus.OK);
 
     }
 
