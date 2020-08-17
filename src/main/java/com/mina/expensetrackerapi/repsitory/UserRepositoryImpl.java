@@ -2,6 +2,7 @@ package com.mina.expensetrackerapi.repsitory;
 
 import com.mina.expensetrackerapi.exception.EtAuthException;
 import com.mina.expensetrackerapi.model.User;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -32,12 +33,13 @@ public class UserRepositoryImpl implements UserRepository {
     public Integer create(String firstName, String lastName, String email, String password) throws EtAuthException {
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();
+            String hashPassword = BCrypt.hashpw(password, BCrypt.gensalt(10));
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, firstName);
                 ps.setString(2, lastName);
                 ps.setString(3, email);
-                ps.setString(4, password);
+                ps.setString(4, hashPassword);
                 return ps;
             }, keyHolder);
             return (Integer) keyHolder.getKeys().get("USER_ID");
