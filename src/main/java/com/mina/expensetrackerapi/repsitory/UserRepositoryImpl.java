@@ -22,6 +22,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     private static final String SQL_COUNT_BY_USERID = "SELECT * FROM ET_USERS WHERE USER_ID = ?";
 
+    private static final String SQL_FIND_BY_EMAIL = "SELECT * FROM ET_USERS WHERE EMAIL = ?";
+
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -48,7 +50,15 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User findByEmailAndPassword(String email, String password) throws EtAuthException {
-        return null;
+        try {
+            User user = jdbcTemplate.queryForObject(SQL_FIND_BY_EMAIL, new Object[]{email}, userRowMapper);
+            if (!password.equals(user.getPassword()))
+                throw new EtAuthException("Invalid username and password");
+            return user;
+
+        } catch (RuntimeException exception) {
+            throw new EtAuthException("Invalid username and password");
+        }
     }
 
     @Override
