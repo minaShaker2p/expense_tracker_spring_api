@@ -49,6 +49,7 @@ public class UserController {
         String token = Jwts.builder().signWith(SignatureAlgorithm.HS256, Constants.API_SECRET_KEY)
                 .setIssuedAt(new Date(timeStamp))
                 .setExpiration(new Date(timeStamp + Constants.TOKEN_VALIDITY))
+                .claim("userId", user.getUserId())
                 .claim("email", user.getEmail())
                 .claim("firstName", user.getFirstName())
                 .claim("lastName", user.getLastName())
