@@ -1,5 +1,7 @@
 package com.mina.expensetrackerapi.service;
 
+import com.mina.expensetrackerapi.exception.EtBadRequestException;
+import com.mina.expensetrackerapi.exception.EtResourceNotFoundException;
 import com.mina.expensetrackerapi.model.Category;
 
 import java.util.List;
